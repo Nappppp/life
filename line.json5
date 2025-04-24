@@ -12,7 +12,7 @@
         contents: [
           {
             type: "image",
-            url: "https://i.imgur.com/GclvYFK.png",
+            url: "https://github.com/Nappppp/life/blob/master/logo.png?raw=true",
             size: "full",
             aspectMode: "fit",
             aspectRatio: "1:1",
@@ -34,7 +34,7 @@
                 type: "text",
                 text: "黃鈺涵 Nap",
                 weight: "bold",
-                size: "lg",
+                size: "xl",
                 color: "#000000",
               },
               {
@@ -60,33 +60,58 @@
                     contents: [
                       {
                         type: "text",
-                        text: "設計：視覺設計、CIS、",
+                        text: "視覺設計：",
                         size: "sm",
                         wrap: true,
-                        color: "#939393",
+                        align: "start",
+                      },
+                      {
+                        type: "text",
+                        text: "視覺設計、CIS",
+                        size: "sm",
                       },
                     ],
                   },
                   {
-                    type: "text",
-                    text: "前端開發： 網頁切版、網站部署、SEO",
-                    size: "sm",
-                    wrap: true,
-                    color: "#939393",
+                    type: "box",
+                    layout: "horizontal",
+                    contents: [
+                      {
+                        type: "text",
+                        text: "前端開發：",
+                        size: "sm",
+                        wrap: true,
+                      },
+                      {
+                        type: "text",
+                        text: " 網頁切版、網站部署、SEO",
+                        size: "sm",
+                      },
+                    ],
                   },
                   {
-                    type: "text",
-                    text: " 後端開發：後端系統架設、RESTful API串接",
-                    size: "sm",
-                    wrap: true,
-                    color: "#939393",
+                    type: "box",
+                    layout: "horizontal",
+                    contents: [
+                      {
+                        type: "text",
+                        text: " 後端開發：",
+                        size: "sm",
+                        wrap: true,
+                      },
+                      {
+                        type: "text",
+                        text: "後端系統架設、RESTful API串接",
+                        size: "sm",
+                      },
+                    ],
                   },
                 ],
               },
             ],
           },
         ],
-        spacing: "lg",
+        spacing: "xxl",
       },
       {
         type: "box",
