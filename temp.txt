@@ -87,7 +87,7 @@
                     "contents": [
                       {
                         "type": "text",
-                        "text": " 後端開發：後端系統架設、API串接",
+                        "text": "後端開發：後端系統架設、API串接",
                         "size": "sm",
                         "wrap": true,
                         "align": "start"
