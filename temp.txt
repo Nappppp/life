@@ -1,148 +1,137 @@
 {
-  type: "bubble",
-  size: "mega",
-  body: {
-    type: "box",
-    layout: "vertical",
-    spacing: "md",
-    contents: [
+  "type": "bubble",
+  "size": "giga",
+  "direction": "ltr",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "contents": [
       {
-        type: "box",
-        layout: "horizontal",
-        contents: [
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
           {
-            type: "image",
-            url: "https://github.com/Nappppp/life/blob/master/logo.png?raw=true",
-            size: "full",
-            aspectMode: "fit",
-            aspectRatio: "1:1",
-            flex: 1,
+            "type": "image",
+            "url": "https://github.com/Nappppp/life/blob/master/logo.png?raw=true",
+            "size": "full",
+            "aspectMode": "fit",
+            "aspectRatio": "1:1",
+            "flex": 1
           },
           {
-            type: "box",
-            layout: "vertical",
-            flex: 2,
-            spacing: "sm",
-            contents: [
+            "type": "box",
+            "layout": "vertical",
+            "flex": 2,
+            "spacing": "sm",
+            "contents": [
               {
-                type: "text",
-                text: "網頁前後端 / 視覺設計",
-                size: "sm",
-                color: "#555555",
+                "type": "text",
+                "text": "網頁前後端 / 視覺設計",
+                "size": "sm",
+                "color": "#555555"
               },
               {
-                type: "text",
-                text: "黃鈺涵 Nap",
-                weight: "bold",
-                size: "xl",
-                color: "#000000",
+                "type": "text",
+                "text": "黃鈺涵 Nap",
+                "weight": "bold",
+                "size": "xl",
+                "color": "#000000"
               },
               {
-                type: "separator",
-                margin: "sm",
+                "type": "separator",
+                "margin": "sm"
               },
               {
-                type: "box",
-                layout: "vertical",
-                margin: "sm",
-                spacing: "xs",
-                contents: [
+                "type": "box",
+                "layout": "vertical",
+                "margin": "sm",
+                "spacing": "xs",
+                "contents": [
                   {
-                    type: "text",
-                    text: "專長技能",
-                    weight: "bold",
-                    size: "sm",
-                    margin: "sm",
+                    "type": "text",
+                    "text": "專長技能",
+                    "weight": "bold",
+                    "size": "sm",
+                    "margin": "sm"
                   },
                   {
-                    type: "box",
-                    layout: "horizontal",
-                    contents: [
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
                       {
-                        type: "text",
-                        text: "視覺設計：",
-                        size: "sm",
-                        wrap: true,
-                        align: "start",
-                      },
-                      {
-                        type: "text",
-                        text: "視覺設計、CIS",
-                        size: "sm",
-                      },
-                    ],
+                        "type": "text",
+                        "text": "視覺設計：視覺設計、CIS",
+                        "size": "sm",
+                        "wrap": true,
+                        "align": "start"
+                      }
+                    ]
                   },
                   {
-                    type: "box",
-                    layout: "horizontal",
-                    contents: [
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
                       {
-                        type: "text",
-                        text: "前端開發：",
-                        size: "sm",
-                        wrap: true,
-                      },
-                      {
-                        type: "text",
-                        text: " 網頁切版、網站部署、SEO",
-                        size: "sm",
-                      },
-                    ],
+                        "type": "text",
+                        "text": "前端開發： 網頁切版、網站部署、SEO",
+                        "size": "sm",
+                        "wrap": true
+                      }
+                    ]
                   },
                   {
-                    type: "box",
-                    layout: "horizontal",
-                    contents: [
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
                       {
-                        type: "text",
-                        text: " 後端開發：",
-                        size: "sm",
-                        wrap: true,
-                      },
-                      {
-                        type: "text",
-                        text: "後端系統架設、RESTful API串接",
-                        size: "sm",
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
+                        "type": "text",
+                        "text": " 後端開發：後端系統架設、API串接",
+                        "size": "sm",
+                        "wrap": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
         ],
-        spacing: "xxl",
+        "spacing": "xxl"
       },
       {
-        type: "box",
-        layout: "vertical",
-        contents: [
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
           {
-            type: "button",
-            action: {
-              type: "uri",
-              label: "聯絡電話",
-              uri: "tel:0975556525",
+            "type": "button",
+            "action": {
+              "type": "uri",
+              "label": "聯絡電話",
+              "uri": "tel:0975556525"
             },
-            style: "secondary",
+            "style": "secondary",
+            "margin": "none",
+            "height": "md"
           },
           {
-            type: "button",
-            action: {
-              type: "uri",
-              label: "E-mail",
-              uri: "mailto:pockie32@gmail.com",
+            "type": "button",
+            "action": {
+              "type": "uri",
+              "label": "E-mail",
+              "uri": "mailto:pockie32@gmail.com"
             },
-            style: "secondary",
-          },
+            "style": "secondary",
+            "height": "md"
+          }
         ],
-        spacing: "sm",
-      },
-    ],
+        "spacing": "sm"
+      }
+    ]
   },
-  styles: {
-    body: {
-      backgroundColor: "#f4f7fa",
-    },
-  },
+  "styles": {
+    "body": {
+      "backgroundColor": "#f4f7fa"
+    }
+  }
 }
