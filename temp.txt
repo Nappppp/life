@@ -75,7 +75,7 @@
                     "contents": [
                       {
                         "type": "text",
-                        "text": "前端開發： 網頁切版、網站部署、SEO",
+                        "text": "前端開發：網頁切版、網站部署、SEO",
                         "size": "sm",
                         "wrap": true
                       }
