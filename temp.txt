@@ -1,103 +1,163 @@
-<% /*
-  EJS 模板：將 vcard 物件渲染為 LINE Flex Carousel JSON
-  參數：
-    - vcard: 需在 Express 路由中提供，結構參考你的 JSON schema
-  依賴：
-    - _ (Lodash)
-    - CryptoJS
-    - gtag, gtagClientId, gtagSessionId, profile (若需 Analytics，不用可移除)
-*/ %>
 <%
-const DEFAULT_LINK = 'https://taichunmin.idv.tw/liff-businesscard/';
-
-// 產生 Analytics 圖片 URL
-function gaScreenView(vcard) {
-  const TEMPLATE_NAME = '多頁訊息1-2021/06/20';
-  let hash = CryptoJS.HmacMD5(JSON.stringify(vcard), TEMPLATE_NAME);
-  hash = CryptoJS.enc.Base64.stringify(hash)
-    .replace(/[+/=]/g, c => ({ '+': '-', '/': '_', '=': '' })[c]);
+function gaScreenView (vcard) {
+  const TEMPLATE_NAME = '臺中市政府-2021/05/18'
+  let hash = CryptoJS.HmacMD5(JSON.stringify(vcard), TEMPLATE_NAME)
+  hash = CryptoJS.enc.Base64.stringify(hash).replace(/[+/=]/g, c => _.get({ '+': '-', '/': '_', '=': '' }, c))
   return gtag.mpCollectUrl({
     client_id: gtagClientId,
     events: [{
       name: 'template_impression',
       params: {
         session_id: gtagSessionId,
-        share_by: profile.userId || 'unknown',
+        share_by: profile.userId ?? 'unknown',
         template_name: TEMPLATE_NAME,
         vcard_hash: hash,
-        vcard_name: _.get(vcard, 'cards[0].title'),
-      }
-    }]
-  });
+        vcard_name: vcard.name,
+      },
+    }],
+  })
 }
-
-function renderBtn(ctx) {
-  const { btn, vcard } = ctx;
-  const uri = _.trim(btn.link || DEFAULT_LINK);
-  return {
-    type: 'button',
-    style: btn.style || 'primary',
-    color: btn.color || '#17c950',
-    height: vcard.btnHeight || 'md',
-    action: {
-      type: 'uri',
-      label: btn.text || '按鈕',
-      uri
-    }
-  };
-}
-
-function renderCard(ctx) {
-  const { card, cardIdx, vcard } = ctx;
-  const uri = _.trim(card.link || DEFAULT_LINK);
-  return {
-    type: 'bubble',
-    hero: {
-      type: 'image',
-      url: card.image || '',
-      size: 'full',
-      aspectMode: 'cover',
-      aspectRatio: vcard.ratio || '20:13',
-      animated: cardIdx < 10,
-      action: { type: 'uri', uri }
-    },
-    body: {
-      type: 'box',
-      layout: 'vertical',
-      spacing: 'md',
-      backgroundColor: card.bgColor || '#ffffff',
-      action: { type: 'uri', uri },
-      contents: [
-        { type: 'text', text: card.title, weight: 'bold', size: vcard.titleSize || 'xl', color: card.titleColor || '#000000', wrap: true },
-        { type: 'text', text: card.desc, size: vcard.descSize || 'sm', color: card.descColor || '#000000', wrap: true },
-        ...(cardIdx === 0 ? [{
-          type: 'box', layout: 'vertical', position: 'absolute', width: '1px', height: '1px', offsetTop: '0px', offsetStart: '0px',
-          contents: [{ type: 'image', url: gaScreenView(vcard), size: 'full', aspectMode: 'cover', aspectRatio: '1:1', gravity: 'center', align: 'center' }]
-        }] : [])
-      ]
-    },
-    footer: {
-      type: 'box',
-      layout: 'vertical',
-      spacing: 'sm',
-      backgroundColor: card.bgColor || '#ffffff',
-      contents: _.map(card.btns, btn => renderBtn({ card, cardIdx, vcard, btn }))
-    }
-  };
-}
-
-function renderCarousel(vcard) {
-  return {
-    type: 'flex',
-    altText: vcard.altText || '數位名片',
-    contents: {
-      type: 'carousel',
-      contents: _.map(vcard.cards, (card, idx) => renderCard({ vcard, card, cardIdx: idx }))
-    }
-  };
-}
-
-// 輸出最終 JSON
-print(JSON.stringify(renderCarousel(vcard)));
 %>
 
+[
+  {
+    "altText": "請在手機上查看「${vcard.name}」的名片。",
+    "type": "flex",
+    "contents": {
+      "size": "giga",
+      "type": "bubble",
+      "body": {
+        "layout": "vertical",
+        "paddingAll": "10px",
+        "type": "box",
+        "action": {
+          "type": "uri",
+          "uri": "${_.trim(vcard.url)}"
+        },
+        "contents": [
+          {
+            "layout": "vertical",
+            "type": "box",
+            "contents": [
+              {
+                "height": "50px",
+                "layout": "vertical",
+                "type": "box",
+                "contents": []
+              },
+              {
+                "layout": "vertical",
+                "type": "box",
+                "contents": [
+                  {
+                    "aspectMode": "cover",
+                    "aspectRatio": "1024:245",
+                    "size": "full",
+                    "type": "image",
+                    "url": "https://i.imgur.com/Xt6tneF.png"
+                  }
+                ]
+              },
+              {
+                "layout": "vertical",
+                "offsetEnd": "10px",
+                "offsetTop": "5px",
+                "position": "absolute",
+                "type": "box",
+                "contents": [
+                  {
+                    "text": "${vcard.unit}",
+                    "type": "text"
+                  },
+                  {
+                    "text": "${vcard.title}",
+                    "type": "text"
+                  },
+                  {
+                    "align": "end",
+                    "margin": "md",
+                    "size": "3xl",
+                    "text": "${vcard.name}",
+                    "type": "text",
+                    "weight": "bold"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "layout": "vertical",
+            "margin": "md",
+            "paddingAll": "5px",
+            "spacing": "sm",
+            "type": "box",
+            "contents": [
+              {
+                "size": "sm",
+                "text": "${vcard.address}",
+                "type": "text",
+                "action": {
+                  "type": "uri",
+                  "uri": "${_.trim(vcard.maps)}"
+                }
+              },
+              {
+                "layout": "horizontal",
+                "type": "box",
+                "contents": [
+                  {
+                    "size": "sm",
+                    "text": "TEL：${_.trim(vcard.tel)}",
+                    "type": "text",
+                    "action": {
+                      "type": "uri",
+                      "uri": "tel:${_.trim(vcard.tel)}"
+                    }
+                  },
+                  {
+                    "size": "sm",
+                    "text": "FAX：${vcard.fax}",
+                    "type": "text"
+                  }
+                ]
+              },
+              {
+                "size": "sm",
+                "text": "Email: ${_.trim(vcard.email)}",
+                "type": "text",
+                "action": {
+                  "type": "uri",
+                  "uri": "mailto:${_.trim(vcard.email)}"
+                }
+              }
+            ]
+          },
+          {
+            "height": "1px",
+            "layout": "vertical",
+            "offsetStart": "0px",
+            "offsetTop": "0px",
+            "position": "absolute",
+            "type": "box",
+            "width": "1px",
+            "contents": [
+              {
+                "align": "center",
+                "aspectMode": "cover",
+                "aspectRatio": "1:1",
+                "gravity": "center",
+                "size": "full",
+                "type": "image",
+                "url": "${gaScreenView(vcard)}"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "text": "貼心提醒：名片上有連結可以開啟",
+    "type": "text"
+  }
+]

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>我的 LINE 名片</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    #shareBtn { padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>點這裡分享我的 LINE 名片</h1>
+  <button id="shareBtn">分享名片</button>
+
+  <script>
+    async function main() {
+      // 初始化 LIFF
+      await liff.init({ liffId: 'YOUR_LIFF_ID' });
+      // 如果不是從 LINE 打開，就引導用戶到 LINE
+      if (!liff.isInClient()) {
+        alert('請從 LINE 中開啟此頁面，才能分享名片');
+        return;
+      }
+      // 載入剛剛的 JSON
+      const res = await fetch('./vcard.json');
+      const flex = await res.json();
+
+      document.getElementById('shareBtn').addEventListener('click', () => {
+        liff.sendMessages([{
+          type: 'flex',
+          altText: '這是我的數位名片',
+          contents: flex
+        }]).then(() => {
+          alert('名片已分享！');
+          liff.closeWindow();
+        }).catch(err => {
+          console.error(err);
+          alert('分享失敗');
+        });
+      });
+    }
+    main();
+  </script>
+</body>
+</html>
