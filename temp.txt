@@ -53,7 +53,8 @@
                     "text": "專長技能",
                     "weight": "bold",
                     "size": "sm",
-                    "margin": "sm"
+                    "margin": "sm",
+                    "color": "#A0A0A0"
                   },
                   {
                     "type": "box",
@@ -112,7 +113,7 @@
               "label": "聯絡電話",
               "uri": "tel:0975556525"
             },
-            "style": "secondary",
+            "style": "primary",
             "margin": "none",
             "height": "md"
           },
@@ -123,7 +124,7 @@
               "label": "E-mail",
               "uri": "mailto:pockie32@gmail.com"
             },
-            "style": "secondary",
+            "style": "primary",
             "height": "md"
           }
         ],
