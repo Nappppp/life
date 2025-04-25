@@ -1,53 +1,103 @@
-const vcard = {
-  // 在 LINE 聊天室預覽時顯示的替代文字
-  altText: "黃鈺涵 Nap 的數位名片",
-  
-  // 影響 hero 圖片比例，可對應你的 logo 是正方形就用 "1:1"
-  ratio: "1:1",
-  
-  // control title & desc 文字大小，可留空使用預設
-  titleSize: "xl",
-  descSize: "sm",
-  
-  // button 區塊高度，預設可留空
-  btnHeight: "md",
+<% /*
+  EJS 模板：將 vcard 物件渲染為 LINE Flex Carousel JSON
+  參數：
+    - vcard: 需在 Express 路由中提供，結構參考你的 JSON schema
+  依賴：
+    - _ (Lodash)
+    - CryptoJS
+    - gtag, gtagClientId, gtagSessionId, profile (若需 Analytics，不用可移除)
+*/ %>
+<%
+const DEFAULT_LINK = 'https://taichunmin.idv.tw/liff-businesscard/';
 
-  // 一張 Carousel 就只放一張 Bubble
-  cards: [
-    {
-      // 上方大圖 (hero)
-      image: "https://github.com/Nappppp/life/blob/master/logo.png?raw=true",
-      // 圖片點擊要導向的連結 (可留空或填公司官網)
-      link: "",
+// 產生 Analytics 圖片 URL
+function gaScreenView(vcard) {
+  const TEMPLATE_NAME = '多頁訊息1-2021/06/20';
+  let hash = CryptoJS.HmacMD5(JSON.stringify(vcard), TEMPLATE_NAME);
+  hash = CryptoJS.enc.Base64.stringify(hash)
+    .replace(/[+/=]/g, c => ({ '+': '-', '/': '_', '=': '' })[c]);
+  return gtag.mpCollectUrl({
+    client_id: gtagClientId,
+    events: [{
+      name: 'template_impression',
+      params: {
+        session_id: gtagSessionId,
+        share_by: profile.userId || 'unknown',
+        template_name: TEMPLATE_NAME,
+        vcard_hash: hash,
+        vcard_name: _.get(vcard, 'cards[0].title'),
+      }
+    }]
+  });
+}
 
-      // Bubble 背景色
-      bgColor: "#f4f7fa",
-
-      // 標題文字
-      title: "網頁前後端 / 視覺設計",
-
-      // 副標或說明文字
-      desc: [
-        "• 視覺設計：視覺設計、CIS",
-        "• 前端開發：網頁切版、網站部署、SEO",
-        "• 後端開發：後端系統架設、RESTful API 串接"
-      ].join("\n"),
-
-      // 底部按鈕
-      btns: [
-        {
-          text: "聯絡電話",
-          link: "tel:0975556525",
-          style: "secondary",
-          color: "#555555"
-        },
-        {
-          text: "E-mail",
-          link: "mailto:pockie32@gmail.com",
-          style: "secondary",
-          color: "#555555"
-        }
-      ]
+function renderBtn(ctx) {
+  const { btn, vcard } = ctx;
+  const uri = _.trim(btn.link || DEFAULT_LINK);
+  return {
+    type: 'button',
+    style: btn.style || 'primary',
+    color: btn.color || '#17c950',
+    height: vcard.btnHeight || 'md',
+    action: {
+      type: 'uri',
+      label: btn.text || '按鈕',
+      uri
     }
-  ]
-};
+  };
+}
+
+function renderCard(ctx) {
+  const { card, cardIdx, vcard } = ctx;
+  const uri = _.trim(card.link || DEFAULT_LINK);
+  return {
+    type: 'bubble',
+    hero: {
+      type: 'image',
+      url: card.image || '',
+      size: 'full',
+      aspectMode: 'cover',
+      aspectRatio: vcard.ratio || '20:13',
+      animated: cardIdx < 10,
+      action: { type: 'uri', uri }
+    },
+    body: {
+      type: 'box',
+      layout: 'vertical',
+      spacing: 'md',
+      backgroundColor: card.bgColor || '#ffffff',
+      action: { type: 'uri', uri },
+      contents: [
+        { type: 'text', text: card.title, weight: 'bold', size: vcard.titleSize || 'xl', color: card.titleColor || '#000000', wrap: true },
+        { type: 'text', text: card.desc, size: vcard.descSize || 'sm', color: card.descColor || '#000000', wrap: true },
+        ...(cardIdx === 0 ? [{
+          type: 'box', layout: 'vertical', position: 'absolute', width: '1px', height: '1px', offsetTop: '0px', offsetStart: '0px',
+          contents: [{ type: 'image', url: gaScreenView(vcard), size: 'full', aspectMode: 'cover', aspectRatio: '1:1', gravity: 'center', align: 'center' }]
+        }] : [])
+      ]
+    },
+    footer: {
+      type: 'box',
+      layout: 'vertical',
+      spacing: 'sm',
+      backgroundColor: card.bgColor || '#ffffff',
+      contents: _.map(card.btns, btn => renderBtn({ card, cardIdx, vcard, btn }))
+    }
+  };
+}
+
+function renderCarousel(vcard) {
+  return {
+    type: 'flex',
+    altText: vcard.altText || '數位名片',
+    contents: {
+      type: 'carousel',
+      contents: _.map(vcard.cards, (card, idx) => renderCard({ vcard, card, cardIdx: idx }))
+    }
+  };
+}
+
+// 輸出最終 JSON
+print(JSON.stringify(renderCarousel(vcard)));
+%>
+
