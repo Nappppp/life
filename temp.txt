@@ -115,7 +115,7 @@
             },
             "style": "primary",
             "margin": "none",
-            "height": "sm"
+            "height": "md"
           },
           {
             "type": "button",
@@ -125,7 +125,7 @@
               "uri": "mailto:pockie32@gmail.com"
             },
             "style": "primary",
-            "height": "sm"
+            "height": "md"
           }
         ],
         "spacing": "sm"
